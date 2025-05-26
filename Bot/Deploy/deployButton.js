@@ -66,12 +66,12 @@ module.exports = {
             interaction.editReply({
                 embeds: [
                     new EmbedBuilder()
-                        .setTitle(`${client.config.emote.loading} **DÉPLOIEMENT EN COURS**`)
+                        .setTitle(`**DÉPLOIEMENT EN COURS** ${client.config.emote.loading}`)
                         .setColor(client.config.color.info)
                         .setDescription(
-                            `Le script de déploiement avec l'ID \`${scriptId}\` est en cours d'exécution...\n\n` +
-                            `> - Contenu du script:\n\`\`\`sh\n${script.content}\n\`\`\`\n` +
-                            `⏱ Temps écoulé: ${elapsed}s`
+                            `Le script de déploiement avec l'ID \`${scriptId}\` est en cours d'exécution...\n` +
+                            `> - Contenu du script:\n\`\`\`sh\n${script.content}\n\`\`\`\n\n` +
+                            `⏱ *Temps écoulé: ${elapsed}s*`
                         )
                         .setTimestamp()
                 ]
@@ -95,6 +95,19 @@ module.exports = {
             const attachment = new AttachmentBuilder(buffer, { name: `deploy-${scriptId}.log` });
             const delay = Date.now() - timeStart;
             clearInterval(interval);
+            await interaction.editReply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setTitle(`**DÉPLOIEMENT TERMINÉ** ${client.config.emote.check}`)
+                        .setColor(client.config.color.info)
+                        .setDescription(
+                            `Le script de déploiement avec l'ID \`${scriptId}\` a été éxécuté.\n` +
+                            `> - Contenu du script:\n\`\`\`sh\n${script.content}\n\`\`\`\n\n` +
+                            `⏱ *Temps écoulé: ${elapsed}s*`
+                        )
+                        .setTimestamp()
+                ]
+            })
 
             await interaction.followUp({
                 embeds: [
