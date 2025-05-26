@@ -31,7 +31,7 @@ module.exports = {
                 `> - ID du script: \`${cachedDatas.scriptId}\`\n` +
                 `> - Rôle obligatoire: ${cachedDatas.roleId ? `<@&${cachedDatas.roleId}>` : "Aucun"}\n`
             )
-            .setImage({ url: `${client.config.barImage}` })
+            .setImage(`${client.config.barImage}`)
 
         const component = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
