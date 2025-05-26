@@ -11,13 +11,16 @@
     ],
 
     "color": {
-        "error": "#ff0000",
+        "error": "#FF3939",
         "success": "#00ff00",
-        "warn": "#ffff00"
+        "warn": "#ffff00",
+        "info": "#5865F2"
     },
     "emote": {
-        "error": "❎",
+        "error": "<:error:1376529899384213525>",
         "success": "✅",
-        "warn": "⚠️"
+        "warn": "⚠️",
+        "check": "<:check:1376529228572528701>",
+        "uncheck": "<:uncheck:1376529240165453895>"
     }
 }
