@@ -58,18 +58,25 @@ module.exports = {
             });
         }
 
-        await interaction.editReply({
-            embeds: [
-                new EmbedBuilder()
-                    .setTitle(`${client.config.emote.check} **DÉPLOIEMENT EN COURS**`)
-                    .setColor(client.config.color.info)
-                    .setDescription(
-                        `Le script de déploiement avec l'ID \`${scriptId}\` est en cours d'exécution...\n\n` +
-                        `> - Contenu du script:\n\`\`\`sh\n${script.content}\n\`\`\`\n`
-                    )
-                    .setTimestamp()
-            ]
-        })
+        let elapsed = 0;
+
+        const interval = setInterval(() => {
+            elapsed++;
+
+            interaction.editReply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setTitle(`${client.config.emote.loading} **DÉPLOIEMENT EN COURS**`)
+                        .setColor(client.config.color.info)
+                        .setDescription(
+                            `Le script de déploiement avec l'ID \`${scriptId}\` est en cours d'exécution...\n\n` +
+                            `> - Contenu du script:\n\`\`\`sh\n${script.content}\n\`\`\`\n` +
+                            `⏱ Temps écoulé: ${elapsed}s`
+                        )
+                        .setTimestamp()
+                ]
+            }).catch(() => {});
+        }, 1000);
 
         const timeStart = Date.now();
         const child = spawn("bash", ["-c", script.content]);
@@ -87,6 +94,7 @@ module.exports = {
             const buffer = Buffer.from(output, "utf-8");
             const attachment = new AttachmentBuilder(buffer, { name: `deploy-${scriptId}.log` });
             const delay = Date.now() - timeStart;
+            clearInterval(interval);
 
             await interaction.followUp({
                 embeds: [
