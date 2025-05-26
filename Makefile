@@ -47,6 +47,7 @@ status: ## Vérifie si le bot est en cours d'exécution.
 			echo "✅ Bot $(BOT_NAME) est en cours (PID: $$PID)"; \
 		else \
 			echo "⚠️  PID trouvé mais le processus ne tourne plus."; \
+			rm -f $(PID_FILE); \
 		fi \
 	else \
 		echo "❌ Bot $(BOT_NAME) non lancé."; \
