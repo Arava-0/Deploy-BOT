@@ -1,3 +1,4 @@
+const { EmbedBuilder } = require("discord.js");
 const Core = require("../../Core");
 
 module.exports = {
@@ -19,10 +20,18 @@ module.exports = {
 
         await Core.updateConfig("deployScripts", scripts);
         await interaction.editReply({
-            content: `Le script de déploiement a été ajouté avec succès !\n` +
-                `> - ID du script: \`${newUUID}\`\n` +
-                `> - Contenu du script:\n` +
-                `\`\`\`sh\n${scriptContent}\`\`\``,
+            embeds: [
+                new EmbedBuilder()
+                .setTitle(`**SCRIPT DE DÉPLOIEMENT AJOUTÉ**`)
+                .setColor(client.config.color.success)
+                .setTimestamp()
+                .setFooter({ text: `ID: ${newUUID}` })
+                .setDescription(
+                    `Le script de déploiement a été ajouté avec succès !\n` +
+                    `> - Contenu du script:\n` +
+                    `\`\`\`sh\n${scriptContent}\`\`\``
+                )
+            ]
         });
     }
 };
