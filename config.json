@@ -5,9 +5,11 @@
     "webhookURL": "https://discord.com/api/webhooks/id/token",
 
     "presence": [
-        "Créé avec soin par Arava",
-        "Discord bot template - DJS V14",
-        "Disponible sur GitHub!"
+        "🔧 Déploiement en un clic",
+        "💻 Scripts gérés depuis Discord",
+        "📝 Ajoute ton script avec /deploy-script",
+        "📄 Logs en direct, sans prise de tête",
+        "🚀 Disponible sur GitHub !"
     ],
 
     "color": {
