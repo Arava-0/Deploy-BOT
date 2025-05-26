@@ -24,13 +24,14 @@ module.exports = {
 
         const channel = interaction.channel;
         const embed = new EmbedBuilder()
-            .setTitle(`**>>> DÉPLOIEMENT AUTOMATIQUE** ${client.config.emote.check}`)
+            .setTitle(`**DÉPLOIEMENT AUTOMATIQUE** ${client.config.emote.check}`)
             .setColor(client.config.color.info)
             .setDescription(
                 `${scriptContent}\n` +
                 `> - ID du script: \`${cachedDatas.scriptId}\`\n` +
                 `> - Rôle obligatoire: ${cachedDatas.roleId ? `<@&${cachedDatas.roleId}>` : "Aucun"}\n`
             )
+            .setImage({ url: `${client.config.barImage}` })
 
         const component = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
