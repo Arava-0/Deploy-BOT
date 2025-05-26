@@ -1,4 +1,5 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, AttachmentBuilder, MessageFlags } = require("discord.js");
+const { spawn } = require("child_process");
 const Core = require("../../Core");
 
 module.exports = {
@@ -63,11 +64,41 @@ module.exports = {
                     .setTitle(`${client.config.emote.check} **DÉPLOIEMENT EN COURS**`)
                     .setColor(client.config.color.info)
                     .setDescription(
-                        `Le script de déploiement avec l'ID \`${scriptId}\` est en cours d'exécution...\n` +
-                        `Contenu du script:\n\`\`\`sh\n${script.content}\n\`\`\`\n`
+                        `Le script de déploiement avec l'ID \`${scriptId}\` est en cours d'exécution...\n\n` +
+                        `> - Contenu du script:\n\`\`\`sh\n${script.content}\n\`\`\`\n`
                     )
                     .setTimestamp()
             ]
         })
+
+        const timeStart = Date.now();
+        const child = spawn("bash", ["-c", script.content]);
+
+        let output = "";
+
+        child.stdout.on("data", data => output += data.toString());
+        child.stderr.on("data", data => output += data.toString());
+
+        child.on("close", async (code) => {
+            const status = code === 0
+                ? `${client.config.emote.check} **DÉPLOIEMENT TERMINÉ AVEC SUCCÈS**`
+                : `${client.config.emote.error} **DÉPLOIEMENT TERMINÉ AVEC DES ERREURS (code ${code})**`;
+
+            const buffer = Buffer.from(output, "utf-8");
+            const attachment = new AttachmentBuilder(buffer, { name: `deploy-${scriptId}.log` });
+            const delay = Date.now() - timeStart;
+
+            await interaction.followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setTitle(status)
+                        .setColor(code === 0 ? client.config.color.info : client.config.color.error)
+                        .setDescription(`Voici le log du script \`${scriptId}\` (${delay} ms).`)
+                        .setTimestamp()
+                ],
+                files: [attachment],
+                flags: MessageFlags.Ephemeral
+            });
+        });
     }
 };
